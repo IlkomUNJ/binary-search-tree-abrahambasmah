@@ -118,7 +118,7 @@ fn test_binary_search_tree(){
     if let Some(left_tree_extract) = &rootlink.borrow().left {
         left_tree_extract
             .borrow_mut()
-            .tree_insert(&left_tree_extract, 5); // Insert new node 5 under left subtree
+            .tree_insert(&left_tree_extract, 5); 
     }
 
     // -------- TRANSPLANT TEST --------
@@ -127,9 +127,9 @@ fn test_binary_search_tree(){
     let new_node = BstNode::new_bst_nodelink(99);
     if let Some(target) = transplant_target {
         BstNode::transplant(
-            &mut rootlink.clone(), // Rc<RefCell<...>>, not wrapped in Some
-            &target,               // Rc<RefCell<...>>
-            &Some(new_node.clone()) // &Option<Rc<RefCell<...>>>
+            &mut rootlink.clone(), 
+            &target,               
+            &Some(new_node.clone()) 
         );
         println!("Replaced node 13 with 99 using transplant.");
     }
