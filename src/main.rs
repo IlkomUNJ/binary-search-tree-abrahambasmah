@@ -112,6 +112,42 @@ fn test_binary_search_tree(){
             println!("node with key of {} does not exist, failed to get successor", key)
         }
     }
+
+    // -------- INSERTION TEST --------
+    println!("--- Testing tree_insert ---");
+    if let Some(left_tree_extract) = &rootlink.borrow().left {
+        left_tree_extract
+            .borrow_mut()
+            .tree_insert(&left_tree_extract, 5); // Insert new node 5 under left subtree
+    }
+
+    // -------- TRANSPLANT TEST --------
+    println!("--- Testing transplant ---");
+    let transplant_target = rootlink.borrow().tree_search(&13);
+    let new_node = BstNode::new_bst_nodelink(99);
+    if let Some(target) = transplant_target {
+        BstNode::transplant(
+            &mut rootlink.clone(), // Rc<RefCell<...>>, not wrapped in Some
+            &target,               // Rc<RefCell<...>>
+            &Some(new_node.clone()) // &Option<Rc<RefCell<...>>>
+        );
+        println!("Replaced node 13 with 99 using transplant.");
+    }
+
+    
+
+    // -------- DELETE TEST --------
+    println!("--- Testing tree_delete ---");
+    let delete_target = rootlink.borrow().tree_search(&6);
+    if let Some(target) = delete_target {
+        BstNode::tree_delete(&mut rootlink.clone(), &target);
+        println!("Deleted node 6 from BST.");
+    }
+
+    // Output the final tree structure after operations
+    let final_tree_path = "bst_final.dot";
+    generate_dotfile_bst(&rootlink, final_tree_path);
+    
 }
 
 #[allow(dead_code)]
